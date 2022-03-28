@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.school.zyg.dao.HotMapper">
+    <resultMap id="hotMap" type="com.school.zyg.pojo.Hot">
+        <result property="id" column="hot_id"/>
+        <result property="title" column="hot_name"/>
+        <result property="content" column="hot_info"/>
+        <result property="date" column="hot_create_time"/>
+    </resultMap>
+    <select id="selectAll" resultMap="hotMap">
+        select * from hot
+    </select>
+    <delete id="delete">
+        delete from hot
+    </delete>
+    <insert id="update">
+        insert into hot (hot_name,hot_info,hot_create_time)
+        (SELECT party_name hot_name,party_info hot_info,party_create_time hot_create_time FROM `party` ORDER BY party_create_time  desc limit 3 )UNION ALL
+--         (select finance_name hot_name,finance_info hot_info,finance_create_time hot_create_time from `finance` ORDER BY finance_create_time  desc limit 3) UNION ALL
+        (SELECT government_name hot_name,government_info hot_info,government_create_time hot_create_time from `government` ORDER BY government_create_time  desc limit 3 )UNION ALL
+        (select village_name hot_name,village_info hot_info,village_create_time hot_create_time from `village` ORDER BY village_create_time  desc limit 3)
+    </insert>
+    <select id="selectById"  resultMap="hotMap">
+        select * from hot where hot_id=#{id}
+    </select>
+    <select id="selectByTitle"  resultMap="hotMap" parameterType="java.lang.String">
+        select * from hot where hot_name like concat('%',#{title},'%')
+
+    </select>
+</mapper>

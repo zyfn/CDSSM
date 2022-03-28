@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.school.zyg.dao.Affairs">
+
+    <!--
+     -->
+    <!--<select id="queryById" parameterType="long" resultMap="userResultMap">-->
+    <!--&lt;!&ndash; SELECT * FROM userlogin WHERE id = #{value}; &ndash;&gt;-->
+    <!--&lt;!&ndash; SELECT * FROM userlogin a,userDetailed b WHERE a.id=b.id and a.id = #{id}; &ndash;&gt;-->
+    <!--select * from userlogin a LEFT JOIN userdetailed b ON a.id = b.id where a.id = #{id};-->
+    <!--</select>-->
+
+    <!--<resultMap type="User" id="userResultMap">-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="account" property="account"/>-->
+    <!--<result column="password" property="password"/>-->
+    <!-- 一对一关联映射 -->
+    <!--<association property="userDetailed" javaType="UserDetailed">-->
+    <!--<id column="userid" property="userid"/>-->
+    <!--<result column="name" property="name"/>-->
+    <!--<result column="sex" property="sex"/>-->
+    <!--<result column="birthday" property="birthday"/>-->
+    <!--<result column="phone" property="phone"/>-->
+    <!--<result column="address" property="address"/>-->
+    <!--<result column="headport" property="headPort"/>-->
+    <!--</association>-->
+    <!--</resultMap>-->
+
+    <!--检查帐号是否存在-->
+    <!--<select id="AccountCheak" parameterType="string" resultType="int">-->
+    <!--select count(*) from userlogin where account=#{value}-->
+    <!--</select>-->
+
+    <!--<select id="quertAllUser" resultType="User">-->
+    <!--select * from userlogin-->
+    <!--</select>-->
+    <!--按条件分页查询所有用户-->
+    <!--<select id="queryUserList" resultMap="userResultMap">-->
+    <!--SELECT * FROM userlogin a LEFT JOIN userdetailed b ON a.id=b.userid-->
+    <!--<where>-->
+    <!--<include refid="aaaa"></include>-->
+    <!--</where>-->
+    <!--limit #{startRow},#{row4Page}-->
+    <!--</select>-->
+    <!--按条件查询用户的数量-->
+    <!--<select id="queryAllUserCount" parameterType="User" resultType="int">-->
+    <!--SELECT count(*) FROM userlogin a LEFT JOIN userdetailed b ON a.id=b.userid-->
+    <!--<where>-->
+    <!--<include refid="aaaa"></include>-->
+    <!--</where>-->
+    <!--</select>-->
+    <!--<include refid="aaaa"></include>-->
+    <!--查询条件-->
+    <!--<sql id="aaaa">-->
+    <!--<if test="user.account!=null and user.account!=''">-->
+    <!--a.account = #{user.account}-->
+    <!--</if>-->
+    <!--<if test="user.userDetailed!=null">-->
+    <!--<if test="user.userDetailed.name!=null and user.userDetailed.name!=''">-->
+    <!--and b.name=#{user.userDetailed.name}-->
+    <!--</if>-->
+    <!--<if test="user.userDetailed.sex!=''">-->
+    <!--and b.sex=#{user.userDetailed.sex}-->
+    <!--</if>-->
+    <!--<if test="user.userDetailed.birthday!=null">-->
+    <!--and b.birthday=#{user.userDetailed.birthday}-->
+    <!--</if>-->
+    <!--<if test="user.userDetailed.phone!=null and user.userDetailed.phone!=''">-->
+    <!--and b.phone like '%${user.userDetailed.phone}%'-->
+    <!--</if>-->
+    <!--<if test="user.userDetailed.address!=null and user.userDetailed.address!=''">-->
+    <!--and b.address like '%${user.userDetailed.address}%'-->
+    <!--</if>-->
+    <!--</if>-->
+    <!--</sql>-->
+
+
+    <!-- 用户登录 -->
+    <!--<select id="UserLogin" resultType="User">-->
+    <!--select a.*,b.groupid userType from userlogin a LEFT JOIN usergroupinfo b ON a.id=b.userid-->
+    <!--where account=#{account} and password=#{password};-->
+    <!--</select>-->
+
+    <!-- 增加用户 -->
+
+    <insert id="addVillage">
+        Insert into village (village_type,village_name,village_info,village_create_time,village_announcer,village_difference,village_township_name) value (#{village.village_type},#{village.village_name},#{village.village_info},#{village.village_create_time},#{village.village_announcer},#{village.village_difference},#{village.village_township_name});
+    </insert>
+    <delete id="deleteVillage">
+		delete from village where village_id=#{id}
+	</delete>
+    <select id="selectVillage" resultMap="VillageList">
+    select * from village
+    </select>
+    <resultMap id="VillageList" type="com.school.zyg.pojo.Village">
+        <id column="village_id" property="village_id"/>
+        <result column="village_type" property="village_type"/>
+        <result column="village_name" property="village_name"/>
+        <result column="village_info" property="village_info"/>
+        <result column="village_create_time" property="village_create_time"/>
+        <result column="village_announcer" property="village_announcer"/>
+        <result column="village_difference" property="village_difference"/>
+        <result column="village_township_name" property="village_township_name"/>
+    </resultMap>
+    <select id="selectVillageById" resultType="com.school.zyg.pojo.Village">
+		select * from village where village_id=#{id}
+	</select>
+    <update id="updateVillage">
+		update village set village_type=#{village.village_type},village_name=#{village.village_name},village_info=#{village.village_info},village_create_time=#{village.village_create_time},village_announcer=#{village.village_announcer},village_difference=#{village.village_difference},village_township_name=#{village.village_township_name} where village_id=#{village.village_id}
+	</update>
+    <select id="selectVillageByDifference" resultMap="VillageDifferenceList">
+    select * from village where village_difference=#{id}
+    </select>
+    <resultMap id="VillageDifferenceList" type="com.school.zyg.pojo.Village">
+        <id column="village_id" property="village_id"/>
+        <result column="village_type" property="village_type"/>
+        <result column="village_name" property="village_name"/>
+        <result column="village_info" property="village_info"/>
+        <result column="village_create_time" property="village_create_time"/>
+        <result column="village_announcer" property="village_announcer"/>
+        <result column="village_difference" property="village_difference"/>
+        <result column="village_township_name" property="village_township_name"/>
+    </resultMap>
+
+
+
+
+
+    <insert id="addGovernment">
+        Insert into government (government_type,government_name,government_info,government_create_time,government_announcer,government_difference,government_township_name) value (#{government.government_type},#{government.government_name},#{government.government_info},#{government.government_create_time},#{government.government_announcer},#{government.government_difference},#{government.government_township_name});
+    </insert>
+    <delete id="deleteGovernment">
+		delete from government where government_id=#{id}
+	</delete>
+    <select id="selectGovernment" resultMap="GovernmentList">
+    select * from government
+    </select>
+    <resultMap id="GovernmentList" type="com.school.zyg.pojo.Government">
+        <id column="government_id" property="government_id"/>
+        <result column="government_type" property="government_type"/>
+        <result column="government_name" property="government_name"/>
+        <result column="government_info" property="government_info"/>
+        <result column="government_create_time" property="government_create_time"/>
+        <result column="government_announcer" property="government_announcer"/>
+        <result column="government_difference" property="government_difference"/>
+        <result column="government_township_name" property="government_township_name"/>
+    </resultMap>
+    <select id="selectGovernmentById" resultType="com.school.zyg.pojo.Government">
+		select * from government where government_id=#{id}
+	</select>
+    <update id="updateGovernment">
+		update government set government_type=#{government.government_type},government_name=#{government.government_name},government_info=#{government.government_info},government_create_time=#{government.government_create_time},government_announcer=#{government.government_announcer},government_difference=#{government.government_difference},government_township_name=#{government.government_government_name} where government_id=#{government.government_id}
+	</update>
+    <select id="selectGovernmentByDifference" resultMap="GovernmentDifferenceList">
+    select * from government where government_difference=#{id}
+    </select>
+    <resultMap id="GovernmentDifferenceList" type="com.school.zyg.pojo.Government">
+        <id column="government_id" property="government_id"/>
+        <result column="government_type" property="government_type"/>
+        <result column="government_name" property="government_name"/>
+        <result column="government_info" property="government_info"/>
+        <result column="government_create_time" property="government_create_time"/>
+        <result column="government_announcer" property="government_announcer"/>
+        <result column="government_difference" property="government_difference"/>
+        <result column="government_township_name" property="government_township_name"/>
+    </resultMap>
+
+
+
+
+
+
+
+
+
+
+
+    <insert id="addParty">
+        Insert into party (party_type,party_name,party_info,party_create_time,party_announcer,party_difference,party_township_name) value (#{party.party_type},#{party.party_name},#{party.party_info},#{party.party_create_time},#{party.party_announcer},#{party.party_difference},#{party.party_township_name});
+    </insert>
+    <delete id="deleteParty">
+		delete from party where party_id=#{id}
+	</delete>
+    <select id="selectParty" resultMap="PartyList">
+    select * from party
+    </select>
+    <resultMap id="PartyList" type="com.school.zyg.pojo.Party">
+        <id column="party_id" property="party_id"/>
+        <result column="party_type" property="party_type"/>
+        <result column="party_name" property="party_name"/>
+        <result column="party_info" property="party_info"/>
+        <result column="party_create_time" property="party_create_time"/>
+        <result column="party_announcer" property="party_announcer"/>
+        <result column="party_difference" property="party_difference"/>
+        <result column="party_township_name" property="party_township_name"/>
+    </resultMap>
+    <select id="selectPartyById" resultType="com.school.zyg.pojo.Party">
+		select * from party where party_id=#{id}
+	</select>
+    <update id="updateParty">
+		update party set party_type=#{party.party_type},party_name=#{party.party_name},party_info=#{party.party_info},party_create_time=#{party.party_create_time},party_announcer=#{party.party_announcer},party_difference=#{party.party_difference},party_township_name=#{party.party_party_name} where party_id=#{party.party_id}
+	</update>
+    <select id="selectPartyByDifference" resultMap="PartyDifferenceList">
+    select * from party where party_difference=#{id}
+    </select>
+    <resultMap id="PartyDifferenceList" type="com.school.zyg.pojo.Party">
+        <id column="party_id" property="party_id"/>
+        <result column="party_type" property="party_type"/>
+        <result column="party_name" property="party_name"/>
+        <result column="party_info" property="party_info"/>
+        <result column="party_create_time" property="party_create_time"/>
+        <result column="party_announcer" property="party_announcer"/>
+        <result column="party_difference" property="party_difference"/>
+        <result column="party_township_name" property="party_township_name"/>
+    </resultMap>
+    <!--<update id="updateUser">-->
+    <!--update userlogin set password=#{password} where id=#{id}-->
+    <!--</update>-->
+
+
+</mapper>

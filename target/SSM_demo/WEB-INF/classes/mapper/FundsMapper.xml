@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.school.zyg.dao.FundsMapper">
+  <resultMap id="BaseResultMap" type="com.school.zyg.pojo.Funds">
+    <id column="funds_id" jdbcType="INTEGER" property="fundsId" />
+    <result column="funds_type" jdbcType="VARCHAR" property="fundsType" />
+    <result column="funds_status" jdbcType="VARCHAR" property="fundsStatus" />
+    <result column="funds_balance" jdbcType="DOUBLE" property="fundsBalance" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from funds
+    where funds_id = #{fundsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.school.zyg.pojo.Funds">
+    insert into funds ( funds_type, funds_status,
+      funds_balance)
+    values (#{fundsType,jdbcType=VARCHAR}, #{fundsStatus,jdbcType=VARCHAR},
+      #{fundsBalance,jdbcType=DOUBLE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.school.zyg.pojo.Funds">
+    update funds
+    set funds_type = #{fundsType,jdbcType=VARCHAR},
+      funds_status = #{fundsStatus,jdbcType=VARCHAR},
+      funds_balance = #{fundsBalance,jdbcType=DOUBLE}
+    where funds_id = #{fundsId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select funds_id, funds_type, funds_status, funds_balance
+    from funds
+    where funds_id = #{fundsId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select funds_id, funds_type, funds_status, funds_balance
+    from funds
+  </select>
+  <select id="selectByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select funds_id, funds_type, funds_status, funds_balance
+    from funds where  funds_type like concat(concat('%',#{fundsType},'%'))
+  </select>
+</mapper>

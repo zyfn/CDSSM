@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.school.zyg.dao.Appraise">
+
+    <!--
+     -->
+    <!--<select id="queryById" parameterType="long" resultMap="userResultMap">-->
+        <!--&lt;!&ndash; SELECT * FROM userlogin WHERE id = #{value}; &ndash;&gt;-->
+        <!--&lt;!&ndash; SELECT * FROM userlogin a,userDetailed b WHERE a.id=b.id and a.id = #{id}; &ndash;&gt;-->
+        <!--select * from userlogin a LEFT JOIN userdetailed b ON a.id = b.id where a.id = #{id};-->
+    <!--</select>-->
+
+    <!--<resultMap type="User" id="userResultMap">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="account" property="account"/>-->
+        <!--<result column="password" property="password"/>-->
+        <!-- 一对一关联映射 -->
+        <!--<association property="userDetailed" javaType="UserDetailed">-->
+        <!--<id column="userid" property="userid"/>-->
+        <!--<result column="name" property="name"/>-->
+        <!--<result column="sex" property="sex"/>-->
+        <!--<result column="birthday" property="birthday"/>-->
+        <!--<result column="phone" property="phone"/>-->
+        <!--<result column="address" property="address"/>-->
+        <!--<result column="headport" property="headPort"/>-->
+        <!--</association>-->
+    <!--</resultMap>-->
+
+    <!--检查帐号是否存在-->
+    <!--<select id="AccountCheak" parameterType="string" resultType="int">-->
+		<!--select count(*) from userlogin where account=#{value}-->
+	<!--</select>-->
+
+    <!--<select id="quertAllUser" resultType="User">-->
+		<!--select * from userlogin-->
+	<!--</select>-->
+    <!--按条件分页查询所有用户-->
+    <!--<select id="queryUserList" resultMap="userResultMap">-->
+        <!--SELECT * FROM userlogin a LEFT JOIN userdetailed b ON a.id=b.userid-->
+        <!--<where>-->
+            <!--<include refid="aaaa"></include>-->
+        <!--</where>-->
+        <!--limit #{startRow},#{row4Page}-->
+    <!--</select>-->
+    <!--按条件查询用户的数量-->
+    <!--<select id="queryAllUserCount" parameterType="User" resultType="int">-->
+        <!--SELECT count(*) FROM userlogin a LEFT JOIN userdetailed b ON a.id=b.userid-->
+        <!--<where>-->
+            <!--<include refid="aaaa"></include>-->
+        <!--</where>-->
+    <!--</select>-->
+    <!--<include refid="aaaa"></include>-->
+    <!--查询条件-->
+    <!--<sql id="aaaa">-->
+        <!--<if test="user.account!=null and user.account!=''">-->
+            <!--a.account = #{user.account}-->
+        <!--</if>-->
+        <!--<if test="user.userDetailed!=null">-->
+        <!--<if test="user.userDetailed.name!=null and user.userDetailed.name!=''">-->
+        <!--and b.name=#{user.userDetailed.name}-->
+        <!--</if>-->
+        <!--<if test="user.userDetailed.sex!=''">-->
+        <!--and b.sex=#{user.userDetailed.sex}-->
+        <!--</if>-->
+        <!--<if test="user.userDetailed.birthday!=null">-->
+        <!--and b.birthday=#{user.userDetailed.birthday}-->
+        <!--</if>-->
+        <!--<if test="user.userDetailed.phone!=null and user.userDetailed.phone!=''">-->
+        <!--and b.phone like '%${user.userDetailed.phone}%'-->
+        <!--</if>-->
+        <!--<if test="user.userDetailed.address!=null and user.userDetailed.address!=''">-->
+        <!--and b.address like '%${user.userDetailed.address}%'-->
+        <!--</if>-->
+        <!--</if>-->
+    <!--</sql>-->
+
+
+    <!-- 用户登录 -->
+    <!--<select id="UserLogin" resultType="User">-->
+		<!--select a.*,b.groupid userType from userlogin a LEFT JOIN usergroupinfo b ON a.id=b.userid-->
+		<!--where account=#{account} and password=#{password};-->
+	<!--</select>-->
+
+    <!-- 增加用户 -->
+
+    <select id="selectThemeById" resultType="com.school.zyg.pojo.Theme">
+		select * from theme where theme_id=#{id}
+	</select>
+    <select id="selectQuestionById" resultType="com.school.zyg.pojo.Question">
+		select * from question where question_id=#{id}
+	</select>
+    <select id="selectTake" resultMap="TakeList">
+    select * from theme
+    </select>
+    <resultMap id="TakeList" type="com.school.zyg.pojo.Theme">
+        <id column="theme_id" property="theme_id"/>
+        <result column="theme_title" property="theme_title"/>
+        <result column="theme_create_time" property="theme_create_time"/>
+    </resultMap>
+    <select id="selectQuestion" resultMap="QuestionList">
+    select * from question where question_id=#{id}
+    </select>
+    <resultMap id="QuestionList" type="com.school.zyg.pojo.Question">
+        <id column="question_id" property="question_id"/>
+        <result column="question_des" property="question_des"/>
+        <result column="theme_id" property="theme_id"/>
+        <result column="yes" property="yes"/>
+        <result column="no" property="no"/>
+        <result column="justsoso" property="justsoso"/>
+    </resultMap>
+    <insert id="take" parameterType="com.school.zyg.pojo.Theme" keyProperty="theme.theme_id" useGeneratedKeys="true">
+        Insert into theme (theme_title,theme_create_time) value (#{theme.theme_title},#{theme.theme_create_time});
+</insert>
+    <insert id="ques" parameterType="java.util.List">
+        Insert into question (question_des,theme_id) values
+        <foreach collection="list"  item="it" index="index" separator="," >
+         (#{it.question_des},#{it.theme_id})
+        </foreach>
+    </insert>
+    <delete id="deleteTake">
+		delete from theme where theme_id=#{id}
+	</delete>
+    <delete id="deleteQuest">
+		delete from question where question_id=#{id}
+	</delete>
+    <update id="updateTheme">
+		update Theme set theme_title=#{theme.theme_title},theme_create_time=#{theme.theme_create_time} where theme_id=#{id}
+	</update>
+    <update id="updateQuestion">
+		update question set question_des=#{question.question_des} where question_id=#{id}
+	</update>
+    <update id="addYes">
+		update question set yes=yes+1 where question_id=#{id}
+	</update>
+    <update id="addNo">
+		update question set no=no+1 where question_id=#{id}
+	</update>
+    <update id="addJustSoSo" parameterType="java.lang.Integer">
+		update question set justsoso=justsoso+1 where question_id=#{id}
+	</update>
+    <!--<update id="updateUser">-->
+		<!--update userlogin set password=#{password} where id=#{id}-->
+	<!--</update>-->
+
+
+</mapper>

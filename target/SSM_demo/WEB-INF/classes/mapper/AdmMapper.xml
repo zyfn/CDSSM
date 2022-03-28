@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.school.zyg.dao.AdmMapper" >
+  <resultMap id="BaseResultMap" type="com.school.zyg.pojo.Adm" >
+    <id column="adm_id" property="admId" jdbcType="INTEGER" />
+    <result column="adm_username" property="admUsername" jdbcType="VARCHAR" />
+    <result column="adm_password" property="admPassword" jdbcType="VARCHAR" />
+    <result column="adm_name" property="admName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from adm
+    where adm_id = #{admId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.school.zyg.pojo.Adm" >
+    insert into adm (adm_id, adm_username, adm_password, 
+      adm_name)
+    values (#{admId,jdbcType=INTEGER}, #{admUsername,jdbcType=VARCHAR}, #{admPassword,jdbcType=VARCHAR}, 
+      #{admName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.school.zyg.pojo.Adm" >
+    update adm
+    set adm_username = #{admUsername,jdbcType=VARCHAR},
+      adm_password = #{admPassword,jdbcType=VARCHAR},
+      adm_name = #{admName,jdbcType=VARCHAR}
+    where adm_id = #{admId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select adm_id, adm_username, adm_password, adm_name
+    from adm
+    where adm_id = #{admId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select adm_id, adm_username, adm_password, adm_name
+    from adm
+  </select>
+  <select id="selectAdm" resultMap="BaseResultMap" >
+    select *
+    from adm where adm_username=#{username} and adm_password=#{password}
+  </select>
+</mapper>
